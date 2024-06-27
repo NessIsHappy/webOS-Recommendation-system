@@ -1,0 +1,9 @@
+{
+    "id"                            : "com.recsys.app",
+    "title"                         : "Recommendation system",
+    "main"                          : "index.html",
+    "icon"                          : "icon.png",
+    "type"                          : "web",
+    "largeIcon"                     : "icon.png",
+    "appDescription"                : "Prototype of content recommendation system"
+}
