@@ -22,3 +22,18 @@ h1 {
     align-items: center;
     cursor: pointer;
 }
+
+#clickButton {
+    width: 175px;
+    height: 75px;
+    font-size: 30px;
+    background-color: lightblue;
+    border-radius: 8px;
+    overflow-y: auto;
+    overflow-x: auto;
+    float: right;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    vertical-align: middle;
+}
