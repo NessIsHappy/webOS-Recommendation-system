@@ -10,7 +10,14 @@ h1 {
     font-size: 50px;
 }
 
-.genre {
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+}
+
+.genreButton {
     width: 500px;
     height: 300px;
     font-size: 50px;
@@ -23,11 +30,10 @@ h1 {
     cursor: pointer;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    justify-content: center;
+.genreButton.selected {
+    width: 500px;
+    height: 300px;
+    background-color: aquamarine;
 }
 
 #clickButton {
