@@ -7,16 +7,18 @@ const options = {
   };
 
 let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=';
-let desired_genre = 28;
+let desired_genre = [28, 12, 16, 35];
+let array_api = [api_string, api_string, api_string, api_string];
 
-api_string += desired_genre;
+for (let i = 0; i < 4; i++) {
+    array_api[i] += desired_genre[i];
+}
 
 let savedData;
 
-async function fetchData() {
+async function fetchData(i) {
   try {
-
-    const response = await fetch(api_string, options);
+    const response = await fetch(array_api[i], options);
     const data = await response.json();
 
     savedData = data;
@@ -26,9 +28,23 @@ async function fetchData() {
   }
 }
 
-fetchData().then(() => {
-    let cnt = savedData["results"].length;
-    for (let i = 0; i < cnt; i++) {
-        console.log(savedData["results"][i]["original_title"]);
-    }
-});
+let images = [];
+
+for (let i = 0; i < 4; i++) {
+    fetchData(i).then(() => {
+        let cnt = savedData["results"].length;
+        for (let j = 0; j < cnt; j++) {
+            //console.log(savedData["results"][j]);
+            images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
+            console.log(images[i]);
+        }
+        console.log(i, "___________");
+        let genreDivs = document.querySelectorAll('.genre');
+
+        genreDivs.forEach((genreDiv, index) => {
+            let img = document.createElement('img');
+            img.src = images[index];
+            genreDiv.appendChild(img);
+        });
+    });
+}

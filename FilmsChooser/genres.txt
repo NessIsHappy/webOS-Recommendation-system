@@ -21,3 +21,6 @@ Thriller 53
 37
 
 12,28,16,35,80,99,18,14,36,27,878,53,10402,10749,10751,9648,37,10770,10752,37
+
+<img src="http://image.tmdb.org/t/p/w500/jvPMJ2zM92jfXxVEFsqP1MMrLaO.jpg">
+            <div class="text-overlay">Первый фильм</div>
