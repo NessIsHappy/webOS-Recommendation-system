@@ -22,7 +22,7 @@ let genres = {
 };
 
 let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=';
-let desired_genre = [28, 12, 16, 35];
+let desired_genre = [];
 let array_api = [api_string, api_string, api_string, api_string];
 
 let urlParams = new URLSearchParams(window.location.search);
@@ -42,36 +42,42 @@ for (let i = 0; i < 4; i++) {
 }
 
 let savedData;
+let savedNames = [];
 
 async function fetchData(i) {
-try {
-  const response = await fetch(array_api[i], options);
-  const data = await response.json();
+  try {
+    const response = await fetch(array_api[i], options);
+    const data = await response.json();
 
-  savedData = data;
+    savedData = data;
 
-} catch (error) {
-  console.error('Ошибка:', error);
-}
+  } catch (error) {
+    console.error('Ошибка:', error);
+  }
 }
 
 let images = [];
 
 for (let i = 0; i < 4; i++) {
   fetchData(i).then(() => {
-      let cnt = savedData["results"].length;
-      for (let j = 0; j < cnt; j++) {
-          //console.log(savedData["results"][j]);
-          images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
-          console.log(images[i]);
-      }
-      console.log(i, "___________");
-      let genreDivs = document.querySelectorAll('.genre');
+    let cnt = 5;
+    for (let j = 0; j < cnt; j++) {
+        images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
+        console.log(images[j]);
 
-      genreDivs.forEach((genreDiv, index) => {
-          let img = document.createElement('img');
-          img.src = images[index];
-          genreDiv.appendChild(img);
-      });
+        let genreIndex = i * 5 + j;
+        let genreNameElement = document.getElementById('genreName' + (i + 1));
+        genreNameElement.textContent = selectedGenres[i]; 
+
+        let movieTitle = savedData["results"][j]["original_title"];
+        console.log(movieTitle, selectedGenres[i]);
+        let genreDivs = document.querySelectorAll('.genre');
+        let img = document.createElement('img');
+        img.src = images[genreIndex];
+        genreDivs[genreIndex].appendChild(img);
+
+        let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
+        movieTitleDiv.textContent = movieTitle;
+    }
   });
 }
