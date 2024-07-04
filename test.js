@@ -83,17 +83,43 @@ for (let i = 0; i < 4; i++) {
 }
 
 let selectedFilms = 0;
+let arrayOfFilms = [];
+let genreArray1 = [];
+let genreArray2 = [];
+let genreArray3 = [];
+let genreArray4 = [];
 
 document.querySelectorAll('.genre').forEach(button => {
   button.addEventListener('click', () => {
+    const genreId = button.getAttribute('data-genre');
+    const genreName = document.getElementById(genreId).textContent;
+    console.log(genreId, genreName);
+    const title = button.querySelector('div').textContent;
     if (button.classList.contains('selected')) {
       button.classList.remove('selected');
+      arrayOfFilms.splice(arrayOfFilms.indexOf(title), 1);
+      if (genreId == 'genreName1') {
+        genreArray1.splice(genreArray1.indexOf(title), 1);
+      } else if (genreId == 'genreName2') {
+        genreArray2.splice(genreArray2.indexOf(title), 1);
+      } else if (genreId == 'genreName3') {
+        genreArray3.push(genreArray3.indexOf(title), 1);
+      } else {
+        genreArray4.push(genreArray4.indexOf(title), 1);
+      }
       selectedFilms--;
     } else {
       button.classList.add('selected');
-      const genreId = button.getAttribute('data-genre');
-      const genreName = document.getElementById(genreId).textContent;
-      const title = button.querySelector('div').textContent;
+      arrayOfFilms.push(title);
+      if (genreId == 'genreName1') {
+        genreArray1.push(title);
+      } else if (genreId == 'genreName2') {
+        genreArray2.push(title);
+      } else if (genreId == 'genreName3') {
+        genreArray3.push(title);
+      } else {
+        genreArray4.push(title);
+      }
       console.log(`Нажата кнопка с названием "${title}" под заголовком "${genreName}"`);
       selectedFilms++;
     }
@@ -101,10 +127,9 @@ document.querySelectorAll('.genre').forEach(button => {
 });
 
 document.getElementById("clickButton").addEventListener("click", function() {
-  if (selectedFilms >= 4) {
+  if (genreArray1.length > 0 && genreArray2.length > 0 && genreArray3.length > 0 && genreArray4.length > 0) {
     window.location.href = "../FilmsRecommendation/index.html";
   } else {
-    alert(selectedCount);
-    document.getElementsByTagName('h1').textContent = 'oops!';
+    console.log("Not enough!");
   }
 });
