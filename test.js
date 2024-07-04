@@ -62,22 +62,45 @@ for (let i = 0; i < 4; i++) {
   fetchData(i).then(() => {
     let cnt = 5;
     for (let j = 0; j < cnt; j++) {
-        images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
-        console.log(images[j]);
+      images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
+      console.log(images[j]);
 
-        let genreIndex = i * 5 + j;
-        let genreNameElement = document.getElementById('genreName' + (i + 1));
-        genreNameElement.textContent = selectedGenres[i]; 
+      let genreIndex = i * 5 + j;
+      let genreNameElement = document.getElementById('genreName' + (i + 1));
+      genreNameElement.textContent = selectedGenres[i]; 
 
-        let movieTitle = savedData["results"][j]["original_title"];
-        console.log(movieTitle, selectedGenres[i]);
-        let genreDivs = document.querySelectorAll('.genre');
-        let img = document.createElement('img');
-        img.src = images[genreIndex];
-        genreDivs[genreIndex].appendChild(img);
+      let movieTitle = savedData["results"][j]["original_title"];
+      console.log(movieTitle, selectedGenres[i]);
+      let genreDivs = document.querySelectorAll('.genre');
+      let img = document.createElement('img');
+      img.src = images[genreIndex];
+      //genreDivs[genreIndex].appendChild(img);
 
-        let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
-        movieTitleDiv.textContent = movieTitle;
+      let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
+      movieTitleDiv.textContent = movieTitle;
     }
   });
 }
+
+let selectedFilms = 0;
+
+document.querySelectorAll('.genre').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.classList.contains('selected')) {
+      button.classList.remove('selected');
+      selectedFilms--;
+    } else if (selectedFilms < 4) {
+      button.classList.add('selected');
+      selectedFilms++;
+    }
+  });
+});
+
+document.getElementById("clickButton").addEventListener("click", function() {
+  if (selectedFilms == 4) {
+    window.location.href = "../FilmsRecommendation/index.html";
+  } else {
+    alert(selectedCount);
+    document.getElementsByTagName('h1').textContent = 'oops!';
+  }
+});

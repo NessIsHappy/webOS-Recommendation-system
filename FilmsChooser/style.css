@@ -32,6 +32,11 @@ h1 {
     filter: blur(2px);
 }
 
+.genre.selected {
+    background-color: red; /* Изменение цвета фона */
+    border: 1px solid #ccc; /* Добавление рамки */
+}
+
 .text-overlay {
     position: absolute;
     top: 50%;
