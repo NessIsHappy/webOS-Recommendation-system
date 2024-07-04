@@ -74,7 +74,7 @@ for (let i = 0; i < 4; i++) {
       let genreDivs = document.querySelectorAll('.genre');
       let img = document.createElement('img');
       img.src = images[genreIndex];
-      //genreDivs[genreIndex].appendChild(img);
+      genreDivs[genreIndex].appendChild(img);
 
       let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
       movieTitleDiv.textContent = movieTitle;
@@ -89,15 +89,18 @@ document.querySelectorAll('.genre').forEach(button => {
     if (button.classList.contains('selected')) {
       button.classList.remove('selected');
       selectedFilms--;
-    } else if (selectedFilms < 4) {
+    } else {
       button.classList.add('selected');
+      const genreName = button.parentElement.querySelector('h2').textContent;
+      const title = button.querySelector('div').textContent;
+      console.log(`Нажата кнопка с названием "${title}" под заголовком "${genreName}"`);
       selectedFilms++;
     }
   });
 });
 
 document.getElementById("clickButton").addEventListener("click", function() {
-  if (selectedFilms == 4) {
+  if (selectedFilms >= 4) {
     window.location.href = "../FilmsRecommendation/index.html";
   } else {
     alert(selectedCount);
