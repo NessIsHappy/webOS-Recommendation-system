@@ -91,7 +91,8 @@ document.querySelectorAll('.genre').forEach(button => {
       selectedFilms--;
     } else {
       button.classList.add('selected');
-      const genreName = button.parentElement.querySelector('h2').textContent;
+      const genreId = button.getAttribute('data-genre');
+      const genreName = document.getElementById(genreId).textContent;
       const title = button.querySelector('div').textContent;
       console.log(`Нажата кнопка с названием "${title}" под заголовком "${genreName}"`);
       selectedFilms++;
