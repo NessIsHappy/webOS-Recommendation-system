@@ -33,7 +33,7 @@ function getRandomInt(max) {
 
 let page = getRandomInt(5);
 
-let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc' + '&page=' + page + '&with_genres=' + selectedgGenres;
+let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc' + '&page=' + 1 + '&with_genres='+selectedgGenres[0]+','+selectedgGenres[1]+','+selectedgGenres[2]+','+selectedgGenres[3]+','+selectedgGenres[4];
 let desired_genre = [];
 let array_api = [api_string, api_string, api_string, api_string];
 
@@ -90,32 +90,32 @@ let savedDataArray = [];
 
 let images = [];
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 1; i++) {
   fetchData(i).then(() => {
-    let cnt = 5;
+    let cnt = 20;
     let uniqueNumbers = generateUniqueRandomNumbers(0, 19, cnt);
     console.log(uniqueNumbers);
     savedDataArray[i] = savedData;
     for (let j = 0; j < cnt; j++) {
-      images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][uniqueNumbers[j]]["backdrop_path"]);
+      images[j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][j]["backdrop_path"]);
       console.log(images[j]);
 
-      let genreIndex = i * 5 + j;
-      let genreNameElement = document.getElementById('genreName' + (i + 1));
-      genreNameElement.textContent = selectedGenres[i]; 
+      let genreIndex = j;
+      // let genreNameElement = document.getElementById('genreName' + (j + 1));
+      // genreNameElement.textContent = selectedGenres[i]; 
 
-      let movieTitle = savedData["results"][uniqueNumbers[j]]["original_title"];
-      
-      console.log(movieTitle, selectedGenres[i]);
+      let movieTitle = savedData["results"][j]["original_title"];
+      //let movieDiv = document.getElementById('genreName' + (j + 1));
+      //console.log(movieTitle, selectedGenres[i]);
       let genreDivs = document.querySelectorAll('.genre');
       let img = document.createElement('img');
       img.src = images[genreIndex];
       genreDivs[genreIndex].appendChild(img);
       //genreDivs[genreIndex](i * 5 + (j + 1)
 
-      // let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
+      let movieTitleDiv = document.getElementById('title' + (j + 1));
       // let movieButtonDiv = document.getElementById('button' + (i * 5 + (j + 1)));
-      // movieTitleDiv.textContent = movieTitle;
+      movieTitleDiv.textContent = movieTitle;
       // movieButtonDiv.setAttribute('data-id', uniqueNumbers[j]);
       // document.querySelectorAll('.genre').forEach(button => {
       //   button.addEventListener('click', () => {
