@@ -2,8 +2,10 @@
 // console.log(array_genre_ids)
 let num_films = localStorage.getItem('number');
 let genre_array = JSON.parse(localStorage.getItem('genre_list'));
+let years_array = JSON.parse(localStorage.getItem('year_list'));
 console.log(num_films)
 console.log(genre_array)
+console.log(years_array)
 function topFiveFrequentNumbers(matrix) {
   let flattenedArray = matrix.flat();
   let counts = {};
@@ -31,9 +33,31 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-let page = getRandomInt(5);
+let page = getRandomInt(2);
 
-let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc' + '&page=' + 1 + '&with_genres='+selectedgGenres[0]+','+selectedgGenres[1]+','+selectedgGenres[2]+','+selectedgGenres[3]+','+selectedgGenres[4];
+function generateYearRanges(years) {
+  let result = new Set();
+
+  function addYearRange(year) {
+    for (let y = year - 5; y <= year + 5; y++) {
+      result.add(y);
+    }
+  }
+
+  for (let year of years) {
+    addYearRange(year);
+  }
+
+  return Array.from(result).sort((a, b) => a - b);
+}
+let full_years = generateYearRanges(years_array);
+console.log(full_years);
+console.log(full_years[2]);
+
+let api_string = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc' + '&page=' + 1 + '&with_genres='+selectedgGenres[0]+','+selectedgGenres[1]+'|'+selectedgGenres[2]+','+selectedgGenres[3]+'|'+selectedgGenres[4] + '&year=';
+for (let i = 0; i < 5; i++){
+  api_string += years_array[i] + '|'
+}
 let desired_genre = [];
 let array_api = [api_string, api_string, api_string, api_string];
 
@@ -49,7 +73,7 @@ let array_api = [api_string, api_string, api_string, api_string];
 // console.log(selectedGenres);
 // console.log(genres[selectedGenres[0]]);
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 4; i++) {
   array_api[i] += desired_genre[i];
 }
 
@@ -125,74 +149,3 @@ for (let i = 0; i < 1; i++) {
     };
   });
 }
-
-// let genres = [1, 2, 3, 4, 5, 1, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5];
-// let years = [1990, 1995, 2000, 1990, 2000, 2005, 1995, 1995, 2010, 2015, 2020, 2020, 2020];
-// let authors = [101, 102, 103, 101, 102, 101, 104, 105, 106, 107, 102, 102, 103, 103, 103];
-
-// function getTop3(array) {
-//   let frequencyMap = array.reduce((acc, val) => {
-//     acc[val] = (acc[val] || 0) + 1;
-//     return acc;
-//   }, {});
-
-//   let sortedEntries = Object.entries(frequencyMap).sort((a, b) => b[1] - a[1]);
-//   return sortedEntries.slice(0, 3).map(entry => Number(entry[0]));
-// }
-
-// function getYearRange(year) {
-//   let start = year - 5;
-//   let end = year + 5;
-//   let range = [];
-//   for (let y = start; y <= end; y++) {
-//     range.push(y);
-//   }
-//   return range;
-// }
-
-// function generateCombinations(arrays) {
-//   if (arrays.length === 0) {
-//     return [[]];
-//   }
-//   let result = [];
-//   let restCombinations = generateCombinations(arrays.slice(1));
-//   for (let item of arrays[0]) {
-//     for (let combination of restCombinations) {
-//       result.push([item, ...combination]);
-//     }
-//   }
-//   return result;
-// }
-
-// function allCombinations(genres, years, authors) {
-//   let topGenres = getTop3(genres);
-//   let topYears = getTop3(years);
-//   let topAuthors = getTop3(authors);
-
-//   let yearRanges = topYears.map(year => getYearRange(year)).flat();
-
-//   let allCombinations = generateCombinations([topGenres, yearRanges, topAuthors]);
-
-//   let genreYearCombinations = generateCombinations([topGenres, yearRanges]);
-
-//   let genreCombinations = generateCombinations([topGenres]);
-
-//   return {
-//     allCombinations,
-//     genreYearCombinations,
-//     genreCombinations
-//   };
-// }
-
-// // Получение всех сочетаний
-// let combinations = allCombinations(genres, years, authors);
-
-// // Вывод результатов
-// console.log('Все сочетания (жанры, годы, авторы):');
-// console.log(combinations.allCombinations);
-
-// console.log('Сочетания (жанры и годы):');
-// console.log(combinations.genreYearCombinations);
-
-// console.log('Сочетания (только жанры):');
-// console.log(combinations.genreCombinations);

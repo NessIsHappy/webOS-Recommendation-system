@@ -128,6 +128,7 @@ let genreArray2 = [];
 let genreArray3 = [];
 let genreArray4 = [];
 let array_genre_ids = [];
+let array_years = [];
 
 document.querySelectorAll('.genre').forEach(button => {
   button.addEventListener('click', () => {
@@ -192,13 +193,17 @@ document.getElementById("clickButton").addEventListener("click", function() {
         //selectedId++;
         if (movieButtonDiv.classList.contains('selected')) {
           let genre_id_data = savedDataArray[i]["results"][genrePageId]["genre_ids"];
+          var year_data = new Date(savedDataArray[i]["results"][genrePageId]["release_date"])
           array_genre_ids[selectedId] = genre_id_data;
+          var nowYear = year_data.getFullYear();
+          array_years[selectedId] = nowYear;
           selectedId++;
         }
       };
     };
     localStorage.setItem('number', selectedId);
     localStorage.setItem('genre_list', JSON.stringify(array_genre_ids));
+    localStorage.setItem('year_list', JSON.stringify(array_years));
   //selectedFilms;
   if (genreArray1.length > 0 && genreArray2.length > 0 && genreArray3.length > 0 && genreArray4.length > 0) {
     let allGenres = [];
