@@ -38,8 +38,8 @@ for (let i = 0; i < 4; i++) {
   desired_genre[i] = genres[selectedGenres[i]];
 }
 
-console.log(desired_genre);
-console.log(genres['Action']);
+//console.log(desired_genre);
+//console.log(genres['Action']);
 console.log(selectedGenres);
 console.log(genres[selectedGenres[0]]);
 
@@ -61,6 +61,9 @@ async function fetchData(i) {
     console.error('Ошибка:', error);
   }
 }
+console.log("!!!!!!!")
+//console.log(str(savedData))
+console.log("!!!!!!!")
 
 function generateUniqueRandomNumbers(min, max, count) {
   if (max - min + 1 < count) {
@@ -76,7 +79,8 @@ function generateUniqueRandomNumbers(min, max, count) {
   return Array.from(result);
 }
 
-
+let savedDataArray = [];
+// savedDataId = 0;
 
 let images = [];
 
@@ -85,6 +89,7 @@ for (let i = 0; i < 4; i++) {
     let cnt = 5;
     let uniqueNumbers = generateUniqueRandomNumbers(0, 19, cnt);
     console.log(uniqueNumbers);
+    savedDataArray[i] = savedData;
     for (let j = 0; j < cnt; j++) {
       images[i * 5 + j] = ("http://image.tmdb.org/t/p/w500" + savedData["results"][uniqueNumbers[j]]["backdrop_path"]);
       console.log(images[j]);
@@ -94,28 +99,40 @@ for (let i = 0; i < 4; i++) {
       genreNameElement.textContent = selectedGenres[i]; 
 
       let movieTitle = savedData["results"][uniqueNumbers[j]]["original_title"];
+      
       console.log(movieTitle, selectedGenres[i]);
       let genreDivs = document.querySelectorAll('.genre');
       let img = document.createElement('img');
       img.src = images[genreIndex];
       genreDivs[genreIndex].appendChild(img);
+      //genreDivs[genreIndex](i * 5 + (j + 1)
 
       let movieTitleDiv = document.getElementById('title' + (i * 5 + (j + 1)));
+      let movieButtonDiv = document.getElementById('button' + (i * 5 + (j + 1)));
       movieTitleDiv.textContent = movieTitle;
-    }
+      movieButtonDiv.setAttribute('data-id', uniqueNumbers[j]);
+      // document.querySelectorAll('.genre').forEach(button => {
+      //   button.addEventListener('click', () => {
+      //     button.setAttribute('data-id', uniqueNumbers[j]);
+      //   });
+      // });
+    };
   });
 }
 
 let selectedFilms = 0;
+let selectedId = 0;
 let arrayOfFilms = [];
 let genreArray1 = [];
 let genreArray2 = [];
 let genreArray3 = [];
 let genreArray4 = [];
+let array_genre_ids = [];
 
 document.querySelectorAll('.genre').forEach(button => {
   button.addEventListener('click', () => {
     const genreId = button.getAttribute('data-genre');
+    const genrePageId = button.getAttribute('data-id');
     const genreName = document.getElementById(genreId).textContent;
     console.log(genreId, genreName);
     const title = button.querySelector('div').textContent;
@@ -137,20 +154,52 @@ document.querySelectorAll('.genre').forEach(button => {
       arrayOfFilms.push(title);
       if (genreId == 'genreName1') {
         genreArray1.push(title);
+        fetchData(0).then(() => {
+          let real_name = savedData["results"][genrePageId]["genre_ids"];
+          console.log(`Нажата кнопка с названием "${title}" под заголовком "${real_name}"`);
+        });
       } else if (genreId == 'genreName2') {
         genreArray2.push(title);
+        fetchData(1).then(() => {
+          let real_name = savedData["results"][genrePageId]["original_title"];
+          console.log(`Нажата кнопка с названием "${title}" под заголовком "${real_name}"`);
+        });
       } else if (genreId == 'genreName3') {
         genreArray3.push(title);
+        fetchData(2).then(() => {
+          let real_name = savedData["results"][genrePageId]["original_title"];
+          console.log(`Нажата кнопка с названием "${title}" под заголовком "${real_name}"`);
+        });
       } else {
         genreArray4.push(title);
+        fetchData(3).then(() => {
+          let real_name = savedData["results"][genrePageId]["original_title"];
+          console.log(`Нажата кнопка с названием "${title}" под заголовком "${real_name}"`);
+        });
       }
-      console.log(`Нажата кнопка с названием "${title}" под заголовком "${genreName}"`);
+      //console.log(`Нажата кнопка с названием "${title}" под заголовком "${genreName}"`);
       selectedFilms++;
     }
   });
 });
+//fetchData()
 
 document.getElementById("clickButton").addEventListener("click", function() {
+  for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 5; j++) {
+        movieButtonDiv = document.getElementById('button' + (i * 5 + (j + 1)));
+        genrePageId = movieButtonDiv.getAttribute('data-id');
+        //selectedId++;
+        if (movieButtonDiv.classList.contains('selected')) {
+          let genre_id_data = savedDataArray[i]["results"][genrePageId]["genre_ids"];
+          array_genre_ids[selectedId] = genre_id_data;
+          selectedId++;
+        }
+      };
+    };
+    localStorage.setItem('number', selectedId);
+    localStorage.setItem('genre_list', JSON.stringify(array_genre_ids));
+  //selectedFilms;
   if (genreArray1.length > 0 && genreArray2.length > 0 && genreArray3.length > 0 && genreArray4.length > 0) {
     let allGenres = [];
     allGenres.push(document.getElementById('genreName1').textContent);
